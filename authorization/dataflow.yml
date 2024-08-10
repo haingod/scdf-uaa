@@ -1,0 +1,41 @@
+﻿spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          uaa:
+            client-id: dataflow
+            client-secret: dataflow
+            redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
+            authorization-grant-type: authorization_code
+            scope:
+              - openid
+              - dataflow.view
+              - dataflow.create
+              - dataflow.manage
+              - dataflow.deploy
+              - dataflow.destroy
+              - dataflow.modify
+              - dataflow.schedule
+        provider:
+          uaa:
+            jwk-set-uri: http://localhost:8080/uaa/token_keys
+            token-uri: http://localhost:8080/uaa/oauth/token
+            user-info-uri: http://localhost:8080/uaa/userinfo
+            user-name-attribute: user_name
+            authorization-uri: http://localhost:8080/uaa/oauth/authorize
+  cloud:
+    dataflow:
+      security:
+        authorization:
+          provider-role-mappings:
+            uaa:
+              map-oauth-scopes: true
+              role-mappings:
+                ROLE_VIEW: dataflow.view
+                ROLE_CREATE: dataflow.create
+                ROLE_MANAGE: dataflow.manage
+                ROLE_DEPLOY: dataflow.deploy
+                ROLE_DESTROY: dataflow.destroy
+                ROLE_MODIFY: dataflow.modify
+                ROLE_SCHEDULE: dataflow.schedule
